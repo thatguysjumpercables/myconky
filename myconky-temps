@@ -1,0 +1,42 @@
+conky.config = {
+
+    -- Run settings
+    update_interval = 1.0,
+    background = false,
+    cpu_avg_samples = 1,
+
+    -- Positioning
+    alignment = 'bottom_right',
+    gap_x = 10,
+    gap_y = 140,
+    maximum_width = 450,
+    minimum_width = 450,
+
+    -- Draw settings
+    draw_shades = true,
+    double_buffer = true,
+    no_buffers = true,
+    
+    -- Compositor settings
+    own_window = true,
+    own_window_type = 'desktop',
+    own_window_transparent = true,
+    own_window_argb_visual = true,
+    own_window_argb_value = 170,
+    own_window_hints = 'undecorated,below,sticky,skip_taskbar,skip_pager',
+    
+    -- Text settings
+    font = 'Ubuntu Mono:normal:size=9',
+    use_xft = true,
+    default_color = '#ffff60',
+}
+
+conky.text = [[
+${font Sans:bold:size=9}TEMPS ${hr 2}$font
+CPU:  ${exec cat /sys/class/hwmon/hwmon3/temp1_input | awk '{printf "%.1f", $1 / 1000}' }°C ${alignr}${execgraph "cat /sys/class/hwmon/hwmon3/temp1_input | awk '{printf "%.1f", $1 / 1000}'" 25,325 ffff00 ff0000 -t}
+GPU:  ${exec cat /sys/class/hwmon/hwmon5/temp1_input | awk '{printf "%.1f", $1 / 1000}'}°C ${alignr}${execgraph "cat /sys/class/hwmon/hwmon5/temp1_input | awk '{printf "%.1f", $1 / 1000}'" 25,325 ffff00 ff0000 -t}
+WiFi: ${exec cat /sys/class/hwmon/hwmon4/temp1_input | awk '{printf "%.1f", $1 / 1000}'}°C ${alignr}${execgraph "cat /sys/class/hwmon/hwmon4/temp1_input | awk '{printf "%.1f", $1 / 1000}'" 25,325 ffff00 ff0000 -t}
+Home: ${exec cat /sys/class/hwmon/hwmon2/temp1_input | awk '{printf "%.1f", $1 / 1000}' }°C ${alignr}${execgraph "cat /sys/class/hwmon/hwmon2/temp1_input | awk '{printf "%.1f", $1 / 1000}'" 25,325 ffff00 ff0000 -t}
+Win:  ${exec cat /sys/class/hwmon/hwmon1/temp1_input | awk '{printf "%.1f", $1 / 1000}'}°C ${alignr}${execgraph "cat /sys/class/hwmon/hwmon1/temp1_input | awk '{printf "%.1f", $1 / 1000}'" 25,325 ffff00 ff0000 -t}
+
+]]
