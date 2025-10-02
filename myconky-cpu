@@ -1,0 +1,49 @@
+conky.config = {
+
+    -- Run settings
+    update_interval = 1.0,
+    background = false,
+    cpu_avg_samples = 1,
+
+    -- Positioning
+    alignment = 'top_right',
+    gap_x = 10,
+    gap_y = 50,
+    maximum_width = 450,
+    minimum_width = 450,
+
+    -- Draw settings
+    draw_shades = true,
+    double_buffer = true,
+    no_buffers = true,
+    
+    -- Compositor settings
+    own_window = true,
+    own_window_type = 'desktop',
+    own_window_transparent = true,
+    own_window_argb_visual = true,
+    own_window_argb_value = 170,
+    own_window_hints = 'undecorated,below,sticky,skip_taskbar,skip_pager',
+    
+    -- Text settings
+    font = 'Ubuntu Mono:normal:size=9',
+    use_xft = true,
+    default_color = '#ffff60',
+}
+
+conky.text = [[
+${font Sans:bold:size=9}CPU ${hr 2}$font
+${execi 86400 awk -F: '/model name/ {gsub(/^ +| +$/, "", $2); print $2; exit}' /proc/cpuinfo} ${goto 362}CPU usage: ${cpu cpu}%
+${cpugraph 7fff00 ff0000 1,60 -t}
+Cores Frequency and Usage:
+0:${goto 35}${freq_g 0}GHz${goto 90}${cpu cpu0}%${goto 125}${cpubar cpu0 10,100 ffff00 ff0000 -t}${goto 240}1:${goto 270}${freq_g 1}GHz${goto 320}${cpu cpu1}%${goto 350}${cpubar cpu1 10,100}
+2:${goto 35}${freq_g 2}GHz${goto 90}${cpu cpu2}%${goto 125}${cpubar cpu2 10,100}${goto 240}3:${goto 270}${freq_g 3}GHz${goto 320}${cpu cpu3}%${goto 350}${cpubar cpu3 10,100}
+4:${goto 35}${freq_g 4}GHz${goto 90}${cpu cpu4}%${goto 125}${cpubar cpu4 10,100}${goto 240}5:${goto 270}${freq_g 5}GHz${goto 320}${cpu cpu5}%${goto 350}${cpubar cpu5 10,100}
+6:${goto 35}${freq_g 6}GHz${goto 90}${cpu cpu6}%${goto 125}${cpubar cpu6 10,100}${goto 240}7:${goto 270}${freq_g 7}GHz${goto 320}${cpu cpu7}%${goto 350}${cpubar cpu7 10,100}
+
+${font Sans:bold:size=9}CPU DETAILS ${hr 2}$color$font
+Number of Cores: ${execi 86400 grep -P '^core id\t' /proc/cpuinfo | sort -u | wc -l} ${goto 250}Number of Threads: ${execi 86400 nproc}
+Load Average (1 min):  ${loadavg 1} ${goto 250}CPU Frequency: ${freq_g}GHz
+Load Average (5 min):  ${loadavg 2} ${goto 250}Processes: ${processes}
+Load Average (15 min): ${loadavg 3} ${goto 250}Running Processes: ${running_processes}
+]]
