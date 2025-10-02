@@ -1,0 +1,50 @@
+conky.config = {
+    -- Run settings
+    update_interval = 2.0,
+    background = false,
+
+    -- Positioning
+    alignment = 'middle_right',
+    gap_x = 10,
+    gap_y = 60,
+    maximum_width = 450,
+    minimum_width = 450,
+
+    -- Draw settings
+    draw_shades = true,
+    double_buffer = true,
+    no_buffers = true,
+    
+    -- Compositor settings
+    own_window = true,
+    own_window_type = 'desktop',
+    own_window_transparent = true,
+    own_window_argb_visual = true,
+    own_window_argb_value = 255,
+    own_window_hints = 'undecorated,below,sticky,skip_taskbar,skip_pager',
+    
+    -- Text settings
+    font = 'Ubuntu Mono:normal:size=9',
+    use_xft = true,
+    default_color = '#ffff60',
+    color1 = "#ffff60",
+    color2 = "#00ff41",
+}
+
+conky.text = [[
+${voffset 30}${color1}${font Ubuntu:bold:size=9}SSD INFO ${hr 2}${font}
+${color1}DISKS AND PARTITIONS${hr 1}
+Name: Size | Type | Mountpoint
+${execi 3600 lsblk | grep "nvme" | egrep 'disk|part' | awk '{print "- " $1 ": " $4 " | " $6 " " $7}'}
+
+${color1}DISK HEALTH${hr 1}
+/dev/nvme1 (Ubuntu):   ${color2}${font Ubuntu:bold:size=9}${exec sudo /usr/sbin/smartctl -a /dev/nvme1n1 | grep "overall-health" | awk '{print $6}'}${font}${color}
+/dev/nvme0 (Windows):  ${color2}${font Ubuntu:bold:size=9}${exec sudo /usr/sbin/smartctl -a /dev/nvme0n1 | grep "overall-health" | awk '{print $6}'}${font}${color}
+
+${voffset 2}${color1}${font Ubuntu:bold:size=9}DISK USAGE STATS ${hr 2}${font}
+Home ${if_mounted /}${goto 130}(${fs_used /} / ${fs_size /})${goto 280}${fs_bar 6 /}${else}${goto 110}Not Mounted${endif}
+Boot ${if_mounted /boot/efi}${goto 130}(${fs_used /boot/efi} / ${fs_size /boot/efi})${goto 280}${fs_bar 6 /boot/efi}${else}${goto 110}Not Mounted${endif}
+
+Read: ${diskio_read} ${goto 200}Write: ${goto 250}${diskio_write}
+${diskiograph_read 20,220 ffff00 ff0000 -t} ${alignr}${diskiograph_write 20,220 ffff00 ff0000 -t}
+]];
