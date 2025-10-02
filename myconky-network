@@ -1,0 +1,47 @@
+conky.config = {
+    -- Run settings
+    update_interval = 2.0,
+    background = false,
+
+    -- Positioning
+    alignment = 'middle_left',
+    gap_x = 10,
+    gap_y = 300,
+    maximum_width = 450,
+    minimum_width = 450,
+
+    -- Draw settings
+    draw_shades = true,
+    double_buffer = true,
+    no_buffers = true,
+    
+    -- Compositor settings
+    own_window = true,
+    own_window_type = 'desktop',
+    own_window_transparent = true,
+    own_window_argb_visual = true,
+    own_window_argb_value = 255,
+    own_window_hints = 'undecorated,below,sticky,skip_taskbar,skip_pager',
+    
+    -- Text settings
+    font = 'Ubuntu Mono:normal:size=9',
+    use_xft = true,
+    default_color = '#ffff60',
+    color1 = '#ffff60',
+}
+
+conky.text = [[
+${color1}${font Sans:bold:size=9}NETWORK ${hr 2}$color$font
+State:${alignr}${if_existing /sys/class/net/wlp3s0/operstate up}${color 00ff41}ONLINE${else}${color ff0000}OFFLINE${endif}$color
+ISP: ${alignr}${execi 6000 curl -s ipinfo.io/org}
+Locale: ${alignr}${execi 6000 curl -s ipinfo.io/city}, ${execi 6000 curl -s ipinfo.io/region}, ${execi 6000 curl -s ipinfo.io/country}
+${alignr}${execi 6000 curl -s ipinfo.io/loc}
+Local IP: ${alignr}${addr wlp3s0}
+Public IP: ${alignr}${execi 600 wget -qO- http://ipinfo.io/ip}
+Total connections: ${alignr}${tcp_portmon 1 61000 count}
+Ping to 192.168.1.1:${alignr}${texeci 15 ping -c 10 192.168.1.1 | awk -F'/' 'END {print $5 " ms ± " $7 " ms"}'}
+Ping to 8.8.8.8:${alignr}${texeci 15 ping -c 10 8.8.8.8 | awk -F'/' 'END {print $5 " ms ± " $7 " ms"}'}
+Up: ${goto 40}${upspeed wlp3s0}/${totalup wlp3s0}${goto 120}${alignr} ${upspeedgraph wlp3s0 10,115 ffff00 ff0000 -t} 
+Down: ${goto 40}${downspeed wlp3s0}/${totaldown wlp3s0}${goto 120}${alignr} ${downspeedgraph wlp3s0 10,115 ffff00 ff0000 -t} 
+Inbound: ${tcp_portmon 1 32767 count}${alignr}Outbound: ${tcp_portmon 32768 61000 count}
+]];
