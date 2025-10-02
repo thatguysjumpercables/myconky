@@ -1,0 +1,39 @@
+conky.config = {
+
+    -- Run settings
+    update_interval = 5.0,
+    background = false,
+
+    -- Positioning
+    alignment = 'top_left',
+    gap_x = 10,
+    gap_y = 50,
+    maximum_width = 550,
+    minimum_width = 400,
+
+    -- Draw settings
+    draw_shades = true,
+    double_buffer = true,
+    no_buffers = true,
+    
+    -- Compositor settings
+    own_window = true,
+    own_window_type = 'desktop',
+    own_window_transparent = true,
+    own_window_argb_visual = true,
+    own_window_argb_value = 255,
+    own_window_hints = 'undecorated,below,sticky,skip_taskbar,skip_pager',
+    
+    -- Text settings
+    font = 'Ubuntu Mono:normal:size=9',
+    use_xft = true,
+    default_color = '#ffff60',
+}
+
+conky.text = [[
+${font Ubuntu:bold:size=9}SYSTEM ${hr 2} $font
+Kernel: $sysname $kernel ${alignr}Distro: ${execi 6000 lsb_release -d | cut -f2-}
+Hostname: $nodename ${goto 270} Conky Version: ${alignr} $conky_version
+Uptime: $uptime ${goto 270} Boot Time: ${alignr} ${alignr}${exec systemd-analyze | grep -o -P '.{0,0}=.{2,5}' | cut -c 2-6 }
+Session Type: ${execi 3600 echo $XDG_SESSION_TYPE} #Se actualiza cada hora (3600 segundos)
+]]
