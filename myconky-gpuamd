@@ -1,0 +1,48 @@
+conky.config = {
+    alignment = 'bottom_left',
+    background = false,
+    border_width = 6,
+    default_color = '#ffff60',
+    color1 = '#ffff60',
+    color2 = '#E80808',
+    color3 = '#00d52a',
+    color4 = '#eee100',
+    double_buffer = true,
+    draw_borders = false,
+    draw_outline = false, -- amplifies text if yes
+    draw_shades = true,
+    font = 'Ubuntu Mono:normal:size=9',
+    gap_x = 10,
+    gap_y = 210,
+    maximum_width  = 450,
+    minimum_width  = 450,
+    no_buffers = true,
+
+    own_window = true,
+    own_window_type = 'desktop',
+    own_window_transparent = true,
+    own_window_argb_visual = true,
+    --own_window_argb_value = 255,
+    own_window_hints = 'undecorated,below,sticky,skip_taskbar,skip_pager',
+    draw_blended = false,
+
+    stippled_borders = 2,
+    update_interval = 1.0,
+    uppercase = false, -- set to yes if you want all text to be in uppercase
+    use_spacer = 'right',
+    use_xft = true,
+
+}
+conky.text = [[
+${voffset 2}${color1}${font :size=8:bold}GPU INFO ${hr 1}${font}
+${color1}Graphics Card: ${execi 86400 lscpu | grep "Model name" |cut -c60-79}
+Driver: ${execi 6000 glxinfo | grep "OpenGL version" |cut -c52-70}
+Utilization: ${execi 2 cat /sys/class/drm/card1/device/gpu_busy_percent} % 
+${execgraph "radeontop -d- -l1 | grep -o 'gpu [0-9]\{1,3\}' | cut -c 5-10"  ffff00 ff0000}
+Frequency Selected: 
+${execi 2 cat /sys/class/drm/card1/device/pp_dpm_sclk}
+Consumption: ${exec sensors | grep "PPT"| cut -c10-}
+free VRAM: ${exec glxinfo | grep 'dedicated'| cut -c48-60} of ${exec glxinfo | grep 'Dedicated'| cut -c29-60} ${goto 290}VRAM Usage: ${execi 5 radeontop -d- -l1 | grep -o 'vram [0-9]\{1,3\}' | cut -c 5-10}%
+${execgraph "radeontop -d- -l1 | grep -o 'vram [0-9]\{1,3\}' | cut -c 5-10" ffff00 ff0000 -t}
+
+]];
