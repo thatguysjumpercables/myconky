@@ -1,0 +1,57 @@
+conky.config = {
+
+    -- Run settings
+    update_interval = 5.0,
+    background = false,
+    cpu_avg_samples = 1,
+
+    -- Positioning
+    alignment = 'middle_right',
+    gap_x = -1362,
+    gap_y = 95,
+    maximum_width = 450,
+    minimum_width = 450,
+
+    -- Draw settings
+    draw_shades = true,
+    double_buffer = true,
+    no_buffers = true,
+    
+    -- Compositor settings
+    own_window = true,
+    own_window_type = 'desktop',
+    own_window_transparent = false,
+    own_window_argb_visual = false,
+    own_window_argb_value = 128,
+    own_window_hints = 'undecorated,below,sticky,skip_taskbar,skip_pager',
+    
+    -- Text settings
+    font = 'Ubuntu Mono:normal:size=12',
+    use_xft = true,
+    default_color = '#ffffff',
+}
+
+conky.text = [[
+${font Sans:bold:size=12}TEMPS ${hr 2}$font
+CPU:       ${exec sensors | grep "Package id 0" | awk '{print $4}'}   ${alignr}${execgraph "sensors | grep "Package id 0" | awk '{print $4}'" 25,275 ffff00 ff0000 -t}
+PCH:       ${exec sensors | grep "pch_cometlake-virtual-0" -A 2 | tail -1 | awk '{print $2}'}   ${alignr}${execgraph "sensors | grep "pch_cometlake-virtual-0" -A 2 | tail -1 | awk '{print $2}'" 25,275 ffff00 ff0000 120 -t}
+GPU:       ${exec sensors | grep "amdgpu-pci-0100" -A 4 | tail -1 | awk '{print $2}'}   ${alignr}${execgraph "sensors | grep "amdgpu-pci-0100" -A 4 | tail -1 | awk '{print $2}'" 25,275 ffff00 ff0000 -t}
+Boot:      ${exec sensors | grep "nvme-pci-0200" -A 2 | tail -1 | awk '{print $2}'}   ${alignr}${execgraph "sensors | grep "nvme-pci-0200" -A 2 | tail -1 | awk '{print $2}'" 25,275 ffff00 ff0000 -t}
+Portal:    ${exec sensors | grep "nvme-pci-0300" -A 2 | tail -1 | awk '{print $2}'}   ${alignr}${execgraph "sensors | grep "nvme-pci-0300" -A 2 | tail -1 | awk '{print $2}'" 25,275 ffff00 ff0000 -t}
+Immich/SB: ${exec sensors | grep "drivetemp-scsi-2-0" -A 2 | tail -1 | awk '{print $2}'}   ${alignr}${execgraph "sensors | grep "drivetemp-scsi-2-0" -A 2 | tail -1 | awk '{print $2}'" 25,275 ffff00 ff0000 -t}
+Jellyfin:  ${exec sensors | grep "drivetemp-scsi-0-0" -A 2 | tail -1 | awk '{print $2}'}   ${alignr}${execgraph "sensors | grep "drivetemp-scsi-0-0" -A 2 | tail -1 | awk '{print $2}'" 25,275 ffff00 ff0000 -t}
+Backup:    ${exec sensors | grep "drivetemp-scsi-3-0" -A 2 | tail -1 | awk '{print $2}'}   ${alignr}${execgraph "sensors | grep "drivetemp-scsi-3-0" -A 2 | tail -1 | awk '{print $2}'" 25,275 ffff00 ff0000 -t}
+${font :size=12:bold}GPU INFO ${hr 1}${font}
+Graphics cards:
+AMD Radeon RX 640
+Driver: ${execi 6000 glxinfo | grep "OpenGL version" |cut -c52-64}
+${goto 20}Utilization: ${execi 2 cat /sys/class/drm/card2/card2-DP-4/device/device/gpu_busy_percent} % 
+${execgraph "radeontop -d- -l1 | grep -o 'gpu [0-9]\{1,3\}' | cut -c 5-10" ffff00 ff0000 -t}
+Fan Control: ${execi 2 sensors | grep "fan1"}
+consumption: ${exec sensors | grep "PPT"| cut -c10-}
+free VRAM: ${exec glxinfo | grep 'dedicated'| cut -c48-60} of ${exec glxinfo | grep 'Dedicated'| cut -c29-60} ${goto 290}VRAM Usage: ${execi 5 radeontop -d- -l1 | grep -o 'vram [0-9]\{1,3\}' | cut -c 5-10}%
+${execgraph "radeontop -d- -l1 | grep -o 'vram [0-9]\{1,3\}' | cut -c 5-10" ffff00 ff0000 -t}
+
+]]
+
+
