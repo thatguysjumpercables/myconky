@@ -1,0 +1,43 @@
+conky.config = {
+
+    -- Run settings
+    update_interval = 1.0,
+    background = true,
+    cpu_avg_samples = 1,
+
+    -- Positioning
+    alignment = 'top_right',
+    gap_x = -1361,
+    gap_y = 5,
+    maximum_width = 1360,
+    minimum_width = 1360,
+
+    -- Draw settings
+    draw_shades = yes,
+    double_buffer = true,
+    no_buffers = true,
+
+
+
+    
+    -- Compositor settings
+    own_window = true,
+    own_window_type = 'desktop',
+    own_window_transparent = false,
+    own_window_argb_visual = false,
+    own_window_argb_value = 128,
+    own_window_hints = 'undecorated,below,sticky,skip_taskbar,skip_pager',
+    
+    -- Text settings
+    font = 'Ubuntu Mono:normal:size=11',
+    use_xft = true,
+    default_color = '#ffffff',
+}
+
+conky.text = [[
+${font Sans:bold:size=11}CPU ${hr 2}$font
+${execi 86400 awk -F: '/model name/ {gsub(/^ +| +$/, "", $2); print $2; exit}' /proc/cpuinfo} ${goto 1250}CPU usage: ${cpu cpu}%
+${cpugraph 7fff00 ff0000 1,60 -t}
+0:${goto 30}${freq_g 0}GHz${goto 105}${cpu cpu0}%${goto 135}${cpubar cpu0 10,150}${goto 345}1:${goto 375}${freq_g 1}GHz${goto 450}${cpu cpu1}%${goto 480}${cpubar cpu1 10,150}${goto 695}2:${goto 725}${freq_g 2}GHz${goto 800}${cpu cpu2}%${goto 830}${cpubar cpu2 10,175}${goto 1050}3:${goto 1080}${freq_g 3}GHz${goto 1155}${cpu cpu3}%${goto 1185}${cpubar cpu3 10,175}
+4:${goto 30}${freq_g 4}GHz${goto 105}${cpu cpu4}%${goto 135}${cpubar cpu4 10,150}${goto 345}5:${goto 375}${freq_g 5}GHz${goto 450}${cpu cpu5}%${goto 480}${cpubar cpu5 10,150}${goto 695}6:${goto 725}${freq_g 6}GHz${goto 800}${cpu cpu6}%${goto 830}${cpubar cpu6 10,175}${goto 1050}7:${goto 1080}${freq_g 7}GHz${goto 1155}${cpu cpu7}%${goto 1185}${cpubar cpu7 10,175}
+]]
