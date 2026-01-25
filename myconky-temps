@@ -1,16 +1,16 @@
 conky.config = {
 
     -- Run settings
-    update_interval = 1.0,
+    update_interval = 2.0,
     background = false,
     cpu_avg_samples = 1,
 
     -- Positioning
-    alignment = 'bottom_right',
+    alignment = 'middle_right',
     gap_x = 10,
-    gap_y = 140,
-    maximum_width = 450,
-    minimum_width = 450,
+    gap_y = 165,
+    maximum_width = 500,
+    minimum_width = 500,
 
     -- Draw settings
     draw_shades = true,
@@ -20,23 +20,25 @@ conky.config = {
     -- Compositor settings
     own_window = true,
     own_window_type = 'desktop',
-    own_window_transparent = true,
+    own_window_transparent = false,
     own_window_argb_visual = true,
-    own_window_argb_value = 170,
+    own_window_argb_value = 128,
     own_window_hints = 'undecorated,below,sticky,skip_taskbar,skip_pager',
     
     -- Text settings
     font = 'Ubuntu Mono:normal:size=9',
     use_xft = true,
-    default_color = '#ffff60',
+    default_color = '#ffffff',
 }
 
 conky.text = [[
 ${font Sans:bold:size=9}TEMPS ${hr 2}$font
-CPU:  ${exec cat /sys/class/hwmon/hwmon3/temp1_input | awk '{printf "%.1f", $1 / 1000}' }°C ${alignr}${execgraph "cat /sys/class/hwmon/hwmon3/temp1_input | awk '{printf "%.1f", $1 / 1000}'" 25,325 ffff00 ff0000 -t}
-GPU:  ${exec cat /sys/class/hwmon/hwmon5/temp1_input | awk '{printf "%.1f", $1 / 1000}'}°C ${alignr}${execgraph "cat /sys/class/hwmon/hwmon5/temp1_input | awk '{printf "%.1f", $1 / 1000}'" 25,325 ffff00 ff0000 -t}
-WiFi: ${exec cat /sys/class/hwmon/hwmon4/temp1_input | awk '{printf "%.1f", $1 / 1000}'}°C ${alignr}${execgraph "cat /sys/class/hwmon/hwmon4/temp1_input | awk '{printf "%.1f", $1 / 1000}'" 25,325 ffff00 ff0000 -t}
-Home: ${exec cat /sys/class/hwmon/hwmon2/temp1_input | awk '{printf "%.1f", $1 / 1000}' }°C ${alignr}${execgraph "cat /sys/class/hwmon/hwmon2/temp1_input | awk '{printf "%.1f", $1 / 1000}'" 25,325 ffff00 ff0000 -t}
-Win:  ${exec cat /sys/class/hwmon/hwmon1/temp1_input | awk '{printf "%.1f", $1 / 1000}'}°C ${alignr}${execgraph "cat /sys/class/hwmon/hwmon1/temp1_input | awk '{printf "%.1f", $1 / 1000}'" 25,325 ffff00 ff0000 -t}
-
+CPU:      ${exec sensors | grep "Package id 0" | awk '{print $4}'}   ${alignr}${execgraph "sensors | grep "Package id 0" | awk '{print $4}'" 25,325 ffff00 ff0000 -t}
+PCH:      ${exec sensors | grep "pch_cometlake-virtual-0" -A 2 | tail -1 | awk '{print $2}'}   ${alignr}${execgraph "sensors | grep "pch_cometlake-virtual-0" -A 2 | tail -1 | awk '{print $2}'" 25,325 ffff00 ff0000 120 -t}
+GPU:      ${exec sensors | grep "amdgpu-pci-0100" -A 4 | tail -1 | awk '{print $2}'}   ${alignr}${execgraph "sensors | grep "amdgpu-pci-0100" -A 4 | tail -1 | awk '{print $2}'" 25,325 ffff00 ff0000 -t}
+Boot:     ${exec sensors | grep "nvme-pci-0200" -A 2 | tail -1 | awk '{print $2}'}   ${alignr}${execgraph "sensors | grep "nvme-pci-0200" -A 2 | tail -1 | awk '{print $2}'" 25,325 ffff00 ff0000 -t}
+Portal:   ${exec sensors | grep "nvme-pci-0300" -A 2 | tail -1 | awk '{print $2}'}   ${alignr}${execgraph "sensors | grep "nvme-pci-0300" -A 2 | tail -1 | awk '{print $2}'" 25,325 ffff00 ff0000 -t}
+Immich:   ${exec sensors | grep "drivetemp-scsi-2-0" -A 2 | tail -1 | awk '{print $2}'}   ${alignr}${execgraph "sensors | grep "drivetemp-scsi-2-0" -A 2 | tail -1 | awk '{print $2}'" 25,325 ffff00 ff0000 -t}
+Jellyfin: ${exec sensors | grep "drivetemp-scsi-0-0" -A 2 | tail -1 | awk '{print $2}'}   ${alignr}${execgraph "sensors | grep "drivetemp-scsi-0-0" -A 2 | tail -1 | awk '{print $2}'" 25,325 ffff00 ff0000 -t}
+Backup:   ${exec sensors | grep "drivetemp-scsi-3-0" -A 2 | tail -1 | awk '{print $2}'}   ${alignr}${execgraph "sensors | grep "drivetemp-scsi-3-0" -A 2 | tail -1 | awk '{print $2}'" 25,325 ffff00 ff0000 -t}
 ]]
